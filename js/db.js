@@ -1,6 +1,6 @@
 function databasePromise(idb){
-    var dbPromise = idb.open("lar-football", 1, function(upgradeDb) {
-        var matchesObjectStore = upgradeDb.createObjectStore("pertandingan", {
+    const dbPromise = idb.open("lar-football", 1, function(upgradeDb) {
+        const matchesObjectStore = upgradeDb.createObjectStore("pertandingan", {
             keyPath: "id"
         });
         matchesObjectStore.createIndex("timKandang", "match.homeTeam.name", {
@@ -14,8 +14,8 @@ function databasePromise(idb){
 }
   
 function saveForLater(data) {
-    var storeName = "pertandingan";
-    var dataToCreate = {
+    const storeName = "pertandingan";
+    const dataToCreate = {
             id: data.match.id,
             head2head: {
                 numberOfMatches: data.head2head.numberOfMatches,
@@ -58,8 +58,8 @@ function cekData(storeName, id) {
     return new Promise(function (resolve, reject) {
         databasePromise(idb)
             .then(function (db) {
-                var tx = db.transaction(storeName, "readonly");
-                var store = tx.objectStore(storeName);
+                const tx = db.transaction(storeName, "readonly");
+                const store = tx.objectStore(storeName);
                 return store.get(id);
             })
             .then(function (data) {
@@ -74,8 +74,8 @@ function cekData(storeName, id) {
   
 function deleteDatafav(storeName, data) {
     databasePromise(idb).then(function (db) {
-        var tx = db.transaction(storeName, 'readwrite');
-        var store = tx.objectStore(storeName);
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
         console.log("deleteDataPlayerfav: cek id= " + data);
         store.delete(data);
         return tx.complete;
@@ -96,8 +96,8 @@ function getDataById(storeName, id) {
     return new Promise(function (resolve, reject) {
         databasePromise(idb)
             .then(function (db) {
-                var tx = db.transaction(storeName, "readonly");
-                var store = tx.objectStore(storeName);
+                const tx = db.transaction(storeName, "readonly");
+                const store = tx.objectStore(storeName);
                 return store.get(id);
             })
             .then(function (data) {
@@ -110,8 +110,8 @@ function getAllData() {
     return new Promise(function (resolve, reject) {
         databasePromise(idb)
             .then(function (db) {
-                var tx = db.transaction("pertandingan", "readonly");
-                var store = tx.objectStore("pertandingan");
+                const tx = db.transaction("pertandingan", "readonly");
+                const store = tx.objectStore("pertandingan");
                 return store.getAll();
             })
             .then(function (data) {
@@ -122,8 +122,8 @@ function getAllData() {
   
 function getSavedDataById(dataType) {
     // Ambil nilai query parameter (?id=)
-    var urlParams = new URLSearchParams(window.location.search);
-    var idParam = Number(urlParams.get("id"));
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = Number(urlParams.get("id"));
   
     getDataById("pertandingan", idParam).then(function (match) {
         resultDetailMatchJSON(match);
